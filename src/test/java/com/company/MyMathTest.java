@@ -3,12 +3,13 @@ package com.company;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -75,12 +76,30 @@ class MyMathTest {
     @Test
     void hasAccess_UserId1_ReturnTrue_MockVersion() {
         TableUsers tableUsers = Mockito.mock(TableUsers.class);
-        when(tableUsers.getUserById(1)).thenReturn(new User("admin",0));
+        when(tableUsers.getUserById(1)).thenReturn(new User("admin", 0));
 
         UsersService usersService = new UsersService(tableUsers);
 
         boolean actual = usersService.hasAccess(1);
 
         assertThat(actual).isTrue();
+    }
+
+    @Test
+    void test_perfomance() {
+        assertTimeout(Duration.ofMillis(1000), () -> {
+            Thread.sleep(1001);
+            System.out.println("dd");
+        });
+    }
+
+    @Test
+    void test_exception() throws Exception {
+        myMath = new MyMath(1, 0);
+        //myMath.getDiv();
+
+        //assertThrows(Exception.class, () -> myMath.getDiv());
+
+        assertThatExceptionOfType(Exception.class).isThrownBy(() -> myMath.getDiv());
     }
 }
